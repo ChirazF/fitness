@@ -1,16 +1,1 @@
-{
-  "hosting": {
-    "public": "build/web",
-    "ignore": [
-      "firebase.json",
-      "**/.*",
-      "**/node_modules/**"
-    ],
-    "rewrites": [
-      {
-        "source": "**",
-        "destination": "/index.html"
-      }
-    ]
-  }
-}
+{"hosting":{"public":"public","ignore":["firebase.json","**/.*","**/node_modules/**"]},"firestore":{"rules":"firestore.rules","indexes":"firestore.indexes.json"},"functions":[{"source":"functions","codebase":"default","ignore":["node_modules",".git","firebase-debug.log","firebase-debug.*.log","*.local"]}],"flutter":{"platforms":{"android":{"default":{"projectId":"fitness-5b83e","appId":"1:789355706227:android:accde6d685cd5c8c553706","fileOutput":"android/app/google-services.json"}},"ios":{"default":{"projectId":"fitness-5b83e","appId":"1:789355706227:ios:f046cffba16f0ed7553706","uploadDebugSymbols":false,"fileOutput":"ios/Runner/GoogleService-Info.plist"}},"dart":{"lib/firebase_options.dart":{"projectId":"fitness-5b83e","configurations":{"android":"1:789355706227:android:accde6d685cd5c8c553706","ios":"1:789355706227:ios:f046cffba16f0ed7553706","web":"1:789355706227:web:4867b5aac5863f3c553706"}}}}}}

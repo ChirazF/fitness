@@ -76,7 +76,7 @@ class _EditAccountScreenState extends State<EditAccountScreen> {
               children: [_editAccountContent(context), FitnessLoading()],
             );
           if (state is EditAccountError) {
-            WidgetsBinding.instance!.addPostFrameCallback((_) async {
+            WidgetsBinding.instance.addPostFrameCallback((_) async {
               _showOpenSettingsPopUp();
             });
           }

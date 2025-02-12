@@ -8,7 +8,6 @@ import 'package:fitness_flutter/screens/start_workout/page/start_workout_page.da
 import 'package:fitness_flutter/screens/start_workout/widget/start_workout_video.dart';
 import 'package:fitness_flutter/screens/workout_details_screen/bloc/workoutdetails_bloc.dart' as workout_bloc;
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class StartWorkoutContent extends StatelessWidget {

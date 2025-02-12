@@ -1,5 +1,8 @@
 {
   "projects": {
-    "default": "fitness-1a139"
-  }
+    "default": "fitness-5b83e",
+    "test": "fitness-5b83e"
+  },
+  "targets": {},
+  "etags": {}
 }

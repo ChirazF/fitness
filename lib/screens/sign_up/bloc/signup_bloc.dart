@@ -4,7 +4,6 @@ import 'package:bloc/bloc.dart';
 import 'package:fitness_flutter/core/service/auth_service.dart';
 import 'package:fitness_flutter/core/service/validation_service.dart';
 import 'package:flutter/material.dart';
-import 'package:meta/meta.dart';
 
 part 'signup_event.dart';
 part 'signup_state.dart';

@@ -2,33 +2,29 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>CLIENT_ID</key>
-	<string>422986340486-6ip6fb1b9o5ologha5r3h4i34o9djqtp.apps.googleusercontent.com</string>
-	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.422986340486-6ip6fb1b9o5ologha5r3h4i34o9djqtp</string>
 	<key>API_KEY</key>
-	<string>AIzaSyBmt3kA_NpOr5fmOj0QevpECGXHKSfUZaM</string>
+	<string>AIzaSyDV1UFviPml-B09y_mAO4WHou9CVlYKezM</string>
 	<key>GCM_SENDER_ID</key>
-	<string>422986340486</string>
+	<string>789355706227</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.example.fitnessFlutter</string>
+	<string>com.chiraz.fitnessapp</string>
 	<key>PROJECT_ID</key>
-	<string>fitness-1a139</string>
+	<string>fitness-5b83e</string>
 	<key>STORAGE_BUCKET</key>
-	<string>fitness-1a139.appspot.com</string>
+	<string>fitness-5b83e.firebasestorage.app</string>
 	<key>IS_ADS_ENABLED</key>
-	<false/>
+	<false></false>
 	<key>IS_ANALYTICS_ENABLED</key>
-	<false/>
+	<false></false>
 	<key>IS_APPINVITE_ENABLED</key>
-	<true/>
+	<true></true>
 	<key>IS_GCM_ENABLED</key>
-	<true/>
+	<true></true>
 	<key>IS_SIGNIN_ENABLED</key>
-	<true/>
+	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:422986340486:ios:86a9572efdb76722b51907</string>
+	<string>1:789355706227:ios:f046cffba16f0ed7553706</string>
 </dict>
 </plist>

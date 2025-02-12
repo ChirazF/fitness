@@ -8,11 +8,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:timezone/data/latest.dart' as tz;
+import 'package:flutter/foundation.dart' show kIsWeb;
+import 'firebase_options.dart'; // ✅ Ajout du fichier Firebase auto-généré
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
-  await Firebase.initializeApp();
+  SystemChrome.setPreferredOrientations(
+      [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
+
+  // ✅ Initialisation Firebase (Web et mobile)
+  await Firebase.initializeApp(
+    options: kIsWeb ? DefaultFirebaseOptions.web : DefaultFirebaseOptions.currentPlatform,
+  );
+
   runApp(MyApp());
 }
 
@@ -22,18 +30,32 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  static late FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = NotificationService.flutterLocalNotificationsPlugin;
+  static late FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+      NotificationService.flutterLocalNotificationsPlugin;
 
   @override
   initState() {
     super.initState();
-    const AndroidInitializationSettings initializationSettingsAndroid = AndroidInitializationSettings('app_icon');
-    final IOSInitializationSettings initializationSettingsIOS = IOSInitializationSettings();
-    final InitializationSettings initializationSettings = InitializationSettings(android: initializationSettingsAndroid, iOS: initializationSettingsIOS);
+    const AndroidInitializationSettings initializationSettingsAndroid =
+        AndroidInitializationSettings('app_icon');
+
+    // ✅ Remplacement de `IOSInitializationSettings` par `DarwinInitializationSettings`
+    final DarwinInitializationSettings initializationSettingsIOS =
+        DarwinInitializationSettings();
+
+    final InitializationSettings initializationSettings = InitializationSettings(
+        android: initializationSettingsAndroid,
+        iOS: initializationSettingsIOS);
 
     tz.initializeTimeZones();
 
-    flutterLocalNotificationsPlugin.initialize(initializationSettings, onSelectNotification: selectNotification);
+    // ✅ Utilisation de `onDidReceiveNotificationResponse`
+    flutterLocalNotificationsPlugin.initialize(
+      initializationSettings,
+      onDidReceiveNotificationResponse: (details) {
+        selectNotification(details.payload);
+      },
+    );
   }
 
   @override
@@ -43,7 +65,10 @@ class _MyAppState extends State<MyApp> {
       debugShowCheckedModeBanner: false,
       title: 'Fitness',
       theme: ThemeData(
-        textTheme: TextTheme(bodyText1: TextStyle(color: ColorConstants.textColor)),
+        textTheme: TextTheme(
+          // ✅ Mise à jour de `bodyLarge` pour éviter une erreur potentielle
+          bodyMedium: TextStyle(color: ColorConstants.textColor),
+        ),
         fontFamily: 'NotoSansKR',
         scaffoldBackgroundColor: Colors.white,
         visualDensity: VisualDensity.adaptivePlatformDensity,
@@ -56,8 +81,8 @@ class _MyAppState extends State<MyApp> {
     showDialog(
       context: context,
       builder: (_) {
-        return new AlertDialog(
-          title: Text("PayLoad"),
+        return AlertDialog(
+          title: Text("Notification"),
           content: Text("Payload : $payload"),
         );
       },

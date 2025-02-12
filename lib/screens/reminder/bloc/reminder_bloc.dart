@@ -27,22 +27,31 @@ class ReminderBloc extends Bloc<ReminderEvent, ReminderState> {
       reminderTime = event.dateTime;
       yield ReminderNotificationState();
     } else if (event is OnSaveTappedEvent) {
-      _scheuleAtParticularTimeAndDate(reminderTime, dayTime);
+      _scheduleAtParticularTimeAndDate(reminderTime, dayTime);
       yield OnSaveTappedState();
     }
   }
 
-  Future _scheuleAtParticularTimeAndDate(
+  Future _scheduleAtParticularTimeAndDate(
       DateTime dateTime, int? dayTime) async {
     final flutterNotificationsPlugin = FlutterLocalNotificationsPlugin();
+    
+    // ✅ Correction: Suppression du troisième paramètre positionnel et ajout de paramètres requis
     final androidPlatformChannelSpecifics = AndroidNotificationDetails(
-        'your other channel id',
-        'your other channel name',
-        'your other channel description');
-    final iOSPlatformChannelSpecifics = IOSNotificationDetails();
+      'your_other_channel_id', 
+      'your_other_channel_name', 
+      channelDescription: 'your other channel description', // ✅ Correction
+      importance: Importance.max,
+      priority: Priority.high,
+    );
+
+    // ✅ Correction: Remplacement de IOSNotificationDetails() par DarwinNotificationDetails()
+    final iOSPlatformChannelSpecifics = DarwinNotificationDetails();
+
     NotificationDetails platformChannelSpecifics = NotificationDetails(
-        android: androidPlatformChannelSpecifics,
-        iOS: iOSPlatformChannelSpecifics);
+      android: androidPlatformChannelSpecifics,
+      iOS: iOSPlatformChannelSpecifics,
+    );
 
     await flutterNotificationsPlugin.zonedSchedule(
       1,
@@ -52,8 +61,8 @@ class ReminderBloc extends Bloc<ReminderEvent, ReminderState> {
       platformChannelSpecifics,
       uiLocalNotificationDateInterpretation:
           UILocalNotificationDateInterpretation.absoluteTime,
-      androidAllowWhileIdle: true,
       matchDateTimeComponents: DateTimeComponents.dayOfWeekAndTime,
+      androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle, // ✅ Correction ajoutée
     );
   }
 
