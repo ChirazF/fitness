@@ -1,17 +1,15 @@
-# Définir la version minimale d’iOS
+# Uncomment this line to define a global platform for your project
 platform :ios, '13.0'
 
-# Désactiver l'analyse des stats CocoaPods pour accélérer le build
+# CocoaPods analytics sends network stats synchronously affecting flutter build latency.
 ENV['COCOAPODS_DISABLE_STATS'] = 'true'
 
-# Configurer le projet Xcode
 project 'Runner', {
   'Debug' => :debug,
   'Profile' => :release,
   'Release' => :release,
 }
 
-# Vérifier que le fichier Generated.xcconfig existe
 def flutter_root
   generated_xcode_build_settings_path = File.expand_path(File.join('..', 'Flutter', 'Generated.xcconfig'), __FILE__)
   unless File.exist?(generated_xcode_build_settings_path)
@@ -33,17 +31,9 @@ target 'Runner' do
   use_frameworks!
   use_modular_headers!
 
-  # 🔥 Ajouter les dépendances Firebase
-  pod 'Firebase/Core'
-  pod 'Firebase/Auth'
-  pod 'Firebase/Firestore'
-  pod 'Firebase/Analytics'
-  pod 'Firebase/Storage'
-
   flutter_install_all_ios_pods File.dirname(File.realpath(__FILE__))
 end
 
-# Appliquer les paramètres supplémentaires après l'installation des Pods
 post_install do |installer|
   installer.pods_project.targets.each do |target|
     flutter_additional_ios_build_settings(target)
