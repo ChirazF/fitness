@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 
@@ -7,21 +5,27 @@ part 'onboarding_event.dart';
 part 'onboarding_state.dart';
 
 class OnboardingBloc extends Bloc<OnboardingEvent, OnboardingState> {
-  OnboardingBloc() : super(OnboardingInitial());
+  int pageIndex = 0; // 🔹 Garde l'index de la page actuelle
+  final pageController = PageController(initialPage: 0); // 🔹 Contrôleur du PageView
 
-  int pageIndex = 0;
+  OnboardingBloc() : super(OnboardingInitial()) {
+    // 🔹 Gestion de l'événement de swipe de page
+    on<PageSwipedEvent>((event, emit) {
+      pageIndex = event.index;
+      emit(PageChangedState(counter: pageIndex));
+      print("🔹 PageSwipedEvent: Nouvelle page index = $pageIndex");
+    });
 
-  final pageController = PageController(initialPage: 0);
+    // 🔹 Gestion du bouton "suivant"
+    on<PageChangedEvent>((event, emit) {
+      print("🛠 PageChangedEvent reçu, pageIndex actuel = $pageIndex");
 
-  @override
-  Stream<OnboardingState> mapEventToState(
-    OnboardingEvent event,
-  ) async* {
-    if (event is PageChangedEvent) {
       if (pageIndex == 2) {
-        yield NextScreenState();
+        print("✅ Dernière page atteinte, passage à NextScreenState !");
+        emit(NextScreenState());
         return;
       }
+
       pageIndex += 1;
 
       pageController.animateToPage(
@@ -30,10 +34,8 @@ class OnboardingBloc extends Bloc<OnboardingEvent, OnboardingState> {
         curve: Curves.ease,
       );
 
-      yield PageChangedState(counter: pageIndex);
-    } else if (event is PageSwipedEvent) {
-      pageIndex = event.index;
-      yield PageChangedState(counter: pageIndex);
-    }
+      emit(PageChangedState(counter: pageIndex));
+      print("✅ PageChangedState émis avec pageIndex = $pageIndex");
+    });
   }
 }
