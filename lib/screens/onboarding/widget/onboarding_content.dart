@@ -2,6 +2,7 @@ import 'package:dots_indicator/dots_indicator.dart';
 import 'package:fitness_flutter/core/const/color_constants.dart';
 import 'package:fitness_flutter/core/const/data_constants.dart';
 import 'package:fitness_flutter/screens/onboarding/bloc/onboarding_bloc.dart';
+import 'package:fitness_flutter/screens/home/page/home_page.dart'; // 🔹 Import de HomePage
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
@@ -9,21 +10,45 @@ import 'package:percent_indicator/circular_percent_indicator.dart';
 class OnboardingContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final bloc = BlocProvider.of<OnboardingBloc>(context);
-    return SafeArea(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Expanded(
-            flex: 4,
-            child: _createPageView(bloc.pageController, bloc),
+    return BlocConsumer<OnboardingBloc, OnboardingState>(
+      listenWhen: (_, currState) => currState is NextScreenState,
+      listener: (context, state) {
+        print("🚀 [DEBUG] NextScreenState détecté, navigation vers HomePage !");
+
+        // 🔹 On supprime toutes les anciennes pages et on va directement à HomePage
+        while (Navigator.canPop(context)) {
+          Navigator.pop(context);
+          print("🔄 [DEBUG] Popped a route from the stack.");
+        }
+
+        Future.delayed(Duration(milliseconds: 300), () {
+          if (context.mounted) {
+            Navigator.of(context).pushReplacement(
+              MaterialPageRoute(builder: (_) => HomePage()),
+            );
+            print("✅ [DEBUG] Successfully navigated to HomePage.");
+          }
+        });
+      },
+      buildWhen: (_, currState) => currState is OnboardingInitial || currState is PageChangedState,
+      builder: (context, state) {
+        final bloc = BlocProvider.of<OnboardingBloc>(context);
+        return SafeArea(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Expanded(
+                flex: 4,
+                child: _createPageView(bloc.pageController, bloc),
+              ),
+              Expanded(
+                flex: 2,
+                child: _createStatic(bloc),
+              ),
+            ],
           ),
-          Expanded(
-            flex: 2,
-            child: _createStatic(bloc),
-          ),
-        ],
-      ),
+        );
+      },
     );
   }
 
@@ -33,6 +58,7 @@ class OnboardingContent extends StatelessWidget {
       controller: controller,
       children: DataConstants.onboardingTiles,
       onPageChanged: (index) {
+        print("🔹 Page swipée : index = $index");
         bloc.add(PageSwipedEvent(index: index));
       },
     );
@@ -41,9 +67,7 @@ class OnboardingContent extends StatelessWidget {
   Widget _createStatic(OnboardingBloc bloc) {
     return Column(
       children: [
-        SizedBox(
-          height: 30,
-        ),
+        SizedBox(height: 30),
         BlocBuilder<OnboardingBloc, OnboardingState>(
           buildWhen: (_, currState) => currState is PageChangedState,
           builder: (context, state) {
@@ -63,32 +87,34 @@ class OnboardingContent extends StatelessWidget {
           builder: (context, state) {
             final percent = _getPercent(bloc.pageIndex);
             return TweenAnimationBuilder<double>(
-                tween: Tween<double>(begin: 0, end: percent),
-                duration: Duration(seconds: 1),
-                builder: (context, value, _) => CircularPercentIndicator(
-                      radius: 110,
-                      backgroundColor: ColorConstants.primaryColor,
-                      progressColor: Colors.white,
-                      percent: 1 - value,
-                      center: Material(
-                        shape: CircleBorder(),
-                        color: ColorConstants.primaryColor,
-                        child: RawMaterialButton(
-                          shape: CircleBorder(),
-                          onPressed: () {
-                            bloc.add(PageChangedEvent());
-                          },
-                          child: Padding(
-                            padding: const EdgeInsets.all(24.0),
-                            child: Icon(
-                              Icons.east_rounded,
-                              size: 38.0,
-                              color: Colors.white,
-                            ),
-                          ),
-                        ),
+              tween: Tween<double>(begin: 0, end: percent),
+              duration: Duration(seconds: 1),
+              builder: (context, value, _) => CircularPercentIndicator(
+                radius: 110,
+                backgroundColor: ColorConstants.primaryColor,
+                progressColor: Colors.white,
+                percent: 1 - value,
+                center: Material(
+                  shape: CircleBorder(),
+                  color: ColorConstants.primaryColor,
+                  child: RawMaterialButton(
+                    shape: CircleBorder(),
+                    onPressed: () {
+                      print("🛠 Bouton central cliqué, envoi de PageChangedEvent !");
+                      bloc.add(PageChangedEvent());
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.all(24.0),
+                      child: Icon(
+                        Icons.east_rounded,
+                        size: 38.0,
+                        color: Colors.white,
                       ),
-                    ));
+                    ),
+                  ),
+                ),
+              ),
+            );
           },
         ),
         SizedBox(height: 30),
