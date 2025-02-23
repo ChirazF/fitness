@@ -18,7 +18,7 @@ class WorkoutDetailsBody extends StatelessWidget {
       child: Stack(
         children: [
           _createImage(),
-          _createBackButton(context),
+         // _createBackButton(context),
         ],
       ),
     );

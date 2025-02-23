@@ -13,23 +13,17 @@ class OnboardingContent extends StatelessWidget {
     return BlocConsumer<OnboardingBloc, OnboardingState>(
       listenWhen: (_, currState) => currState is NextScreenState,
       listener: (context, state) {
-        print("🚀 [DEBUG] NextScreenState détecté, navigation vers HomePage !");
+  print("🚀 [DEBUG] NextScreenState détecté, navigation vers HomePage !");
+  
+  // Remplace toutes les routes précédentes par HomePage
+  Navigator.of(context).pushAndRemoveUntil(
+    MaterialPageRoute(builder: (_) => HomePage()),
+    (route) => false, // Cela supprime toutes les routes précédentes
+  );
+  
+  print("✅ [DEBUG] Successfully navigated to HomePage.");
+},
 
-        // 🔹 On supprime toutes les anciennes pages et on va directement à HomePage
-        while (Navigator.canPop(context)) {
-          Navigator.pop(context);
-          print("🔄 [DEBUG] Popped a route from the stack.");
-        }
-
-        Future.delayed(Duration(milliseconds: 300), () {
-          if (context.mounted) {
-            Navigator.of(context).pushReplacement(
-              MaterialPageRoute(builder: (_) => HomePage()),
-            );
-            print("✅ [DEBUG] Successfully navigated to HomePage.");
-          }
-        });
-      },
       buildWhen: (_, currState) => currState is OnboardingInitial || currState is PageChangedState,
       builder: (context, state) {
         final bloc = BlocProvider.of<OnboardingBloc>(context);

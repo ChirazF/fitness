@@ -9,14 +9,24 @@ class StartWorkoutPage extends StatelessWidget {
   final ExerciseData currentExercise;
   final ExerciseData? nextExercise;
 
-  StartWorkoutPage(
-      {required this.exercise,
-      required this.currentExercise,
-      required this.nextExercise});
+  StartWorkoutPage({
+    required this.exercise,
+    required this.currentExercise,
+    required this.nextExercise,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      // >>> Nouvelle AppBar avec bouton retour <<<
+      appBar: AppBar(
+        title: Text("Workout en cours"),
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back),
+          onPressed: () => Navigator.pop(context),
+        ),
+      ),
+      // Fin de l'AppBar.
       body: _buildContext(context),
     );
   }

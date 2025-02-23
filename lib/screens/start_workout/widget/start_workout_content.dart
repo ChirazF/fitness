@@ -34,7 +34,8 @@ class StartWorkoutContent extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          _createBackButton(context),
+          // Ancien bouton retour commenté :
+          // _createBackButton(context),
           const SizedBox(height: 23),
           _createVideo(context),
           const SizedBox(height: 8),
@@ -117,7 +118,6 @@ class StartWorkoutContent extends StatelessWidget {
   }
 
   Widget _createTimeTracker(BuildContext context) {
-    // final bloc = BlocProvider.of<StartWorkoutBloc>(context);
     return Container(
       width: double.infinity,
       color: ColorConstants.white,
@@ -148,15 +148,6 @@ class StartWorkoutContent extends StatelessWidget {
                     Icon(Icons.access_time, size: 20),
                     const SizedBox(width: 6.5),
                     Text('00:${nextExercise!.minutes > 10 ? nextExercise!.minutes : '0${nextExercise!.minutes}'}')
-                    // BlocBuilder<StartWorkoutBloc, StartWorkoutState>(
-                    //   buildWhen: (_, currState) => currState is PlayTimerState || currState is PauseTimerState,
-                    //   builder: (context, state) {
-                    //     return StartWorkoutTimer(
-                    //       time: bloc.time,
-                    //       isPaused: !(state is PlayTimerState),
-                    //     );
-                    //   },
-                    // ),
                   ],
                 )
               : SizedBox.shrink(),
